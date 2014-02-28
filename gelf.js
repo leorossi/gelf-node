@@ -9,6 +9,7 @@ var Gelf = function(config) {
 
   if (!config) {
     self.config = {
+      ipVersion: 4,
       graylogPort: 12201,
       graylogHostname: '127.0.0.1',
       connection: 'wan',
@@ -88,7 +89,11 @@ Gelf.prototype.compress = function(message, callback) {
 
 Gelf.prototype.sendMessage = function(message) {
   var self = this,
-      client = dgram.createSocket('udp4');
+  if (self.config.ipVersion == 4) { 
+    client = dgram.createSocket('udp4');
+  } else {
+    client = dgram.createSocket('udp6');
+  }
 
   client.send(message, 0, message.length, self.config.graylogPort, self.config.graylogHostname, function(err, bytes) {
     if (err) {
