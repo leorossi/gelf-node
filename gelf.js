@@ -88,7 +88,7 @@ Gelf.prototype.compress = function(message, callback) {
 };
 
 Gelf.prototype.sendMessage = function(message) {
-  var self = this,
+  var self = this;
   if (self.config.ipVersion == 4) { 
     client = dgram.createSocket('udp4');
   } else {
